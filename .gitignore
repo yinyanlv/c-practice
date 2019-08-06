@@ -1,0 +1,7 @@
+# IDE and System files
+.idea/
+.vscode/
+.DS_Store/
+
+**/a.out
+
