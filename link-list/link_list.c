@@ -12,15 +12,26 @@ int main (void) {
     Node *head, *p, *q, w;
 
     p = (Node *)malloc(sizeof(Node));
-    p->data = 1;
+    p->data = 0;
     p->next = NULL;
     head = p;
 
-    w.data = 2;
-    w.next = NULL;
+    for (int i = 0; i < 4; i++) {
+        q = (Node *)malloc(sizeof(Node));
+        q->data = 10 * (i + 1);
+        q->next = NULL;
+        p->next = q;
+        p = q;
+    }
 
-    printf("%d\n", p->data);
-    printf("%d\n", p->next);
-    printf("%d\n", w.data);
-    printf("%d\n", w.next);
+    p->next = NULL;
+
+    printf("head address: %#x\n", head);
+
+    for (Node *p = head; p != NULL; p = p->next) {
+        printf("------------\n");
+        printf("data: %#x\n", p);
+        printf("data: %d\n", p->data);
+        printf("address: %#x\n", p->next);
+    }
 }
