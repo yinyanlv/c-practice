@@ -9,7 +9,7 @@ struct node {
 };
 
 int main (void) {
-    Node *head, *p, *q, w;
+    Node *head, *p, *q;
 
     p = (Node *)malloc(sizeof(Node));
     p->data = 0;
@@ -30,8 +30,8 @@ int main (void) {
 
     for (Node *p = head; p != NULL; p = p->next) {
         printf("------------\n");
-        printf("data: %#x\n", p);
         printf("data: %d\n", p->data);
-        printf("address: %#x\n", p->next);
+        printf("current address: %#x\n", p);
+        printf("next address: %#x\n", p->next);
     }
 }
