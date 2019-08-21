@@ -7,61 +7,54 @@ short is_divide_0(char op, double num);
 
 int main(void) {
 
-    double a, b, c;
-    char op1, op2;
+    double a = 0.0, b, c;
+    double result;
+    char op1 = '+', op2, ch;
 
-    scanf("%lf%c%lf%c%lf", &a, &op1, &b, &op2, &c);
-    char ch = getchar();
+    scanf("%lf", &b);
 
-    if (!is_op(op1)) {
-        printf("op1 %c is not valid!\n", op1);
-        return 0;
-    }
+    while (ch = getchar()) {
 
-    if (!is_op(op2)) {
-        printf("op2 %c is not valid!\n", op2);
-        return 0;
-    }
+        if (ch == '=') {
 
-    if (ch != '=') {
-        printf("please input '=' to compute!\n");
-        return 0;
-    }
+            if (is_divide_0(op1, b)) {
+                printf("a number divided by 0!\n");
+                return 0;
+            }
 
-    double temp, result;
-    if (get_op_priority(op1) >= get_op_priority(op2)) {
+            result = compute(a, op1, b);
+            printf("result: %.2lf\n", result);
+            return 0;
+        } else if (is_op(ch)) {
 
-        if (is_divide_0(op1, b)) {
-            printf("a number divided by 0!\n");
+            op2 = ch;
+            scanf("%lf", &c);
+
+            if (get_op_priority(op1) >= get_op_priority(op2)) {
+
+                if (is_divide_0(op1, b)) {
+                    printf("a number divided by 0!\n");
+                    return 0;
+                }
+
+                a = compute(a, op1, b);
+                op1 = op2;
+                b = c;
+            } else {
+
+                if (is_divide_0(op2, c)) {
+                    printf("a number divided by 0!\n");
+                    return 0;
+                }
+
+                b = compute(b, op2, c);
+            }
+        } else if (ch != ' ') {
+
+            printf("invalid op or input '=' to compute!\n");
             return 0;
         }
-
-        temp = compute(a, op1, b);
-
-        if (is_divide_0(op2, c)) {
-            printf("a number divided by 0!\n");
-            return 0;
-        }
-
-        result = compute(temp, op2, c);
-    } else {
-
-        if (is_divide_0(op2, c)) {
-            printf("a number divided by 0!\n");
-            return 0;
-        }
-
-        temp = compute(b, op2, c);
-
-        if (is_divide_0(op1, temp)) {
-            printf("a number divided by 0!\n");
-            return 0;
-        }
-
-        result = compute(a, op1, temp);
     }
-
-    printf("result: %.2lf\n", result);
 }
 
 short get_op_priority(char op) {
