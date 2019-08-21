@@ -1,10 +1,12 @@
 #include <stdio.h>
 
-short is_op(char op);
 double compute(double a, char op, double b);
 short get_op_priority(char op);
+short is_op(char op);
+short is_divide_0(char op, double num);
 
 int main(void) {
+
     double a, b, c;
     char op1, op2;
 
@@ -28,10 +30,34 @@ int main(void) {
 
     double temp, result;
     if (get_op_priority(op1) >= get_op_priority(op2)) {
+
+        if (is_divide_0(op1, b)) {
+            printf("a number divided by 0!\n");
+            return 0;
+        }
+
         temp = compute(a, op1, b);
+
+        if (is_divide_0(op2, c)) {
+            printf("a number divided by 0!\n");
+            return 0;
+        }
+
         result = compute(temp, op2, c);
     } else {
+
+        if (is_divide_0(op2, c)) {
+            printf("a number divided by 0!\n");
+            return 0;
+        }
+
         temp = compute(b, op2, c);
+
+        if (is_divide_0(op1, temp)) {
+            printf("a number divided by 0!\n");
+            return 0;
+        }
+
         result = compute(a, op1, temp);
     }
 
@@ -54,6 +80,15 @@ short get_op_priority(char op) {
 short is_op(char op) {
 
     if (op == '+' || op == '-' || op == '*' || op == '/') {
+        return 1;
+    }
+
+    return 0;
+}
+
+short is_divide_0(char op, double num) {
+
+    if (op == '/' && num == 0) {
         return 1;
     }
 
