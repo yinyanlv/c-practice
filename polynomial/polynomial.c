@@ -15,8 +15,8 @@ double poly4(double a[], double x, int n);
 void timer(double (*fp)(double a[], double x, int n));
 
 double a[N + 1], x = 1.1;
-clock_t start_time, end_time;
-double seconds;
+clock_t start_t, end_t;
+double ticks;
 
 int main(void) {
 
@@ -24,10 +24,11 @@ int main(void) {
         a[i] = i;
     }
 
-    printf("%lf\n", poly1(a, x, N));
-    printf("%lf\n", poly2(a, x, N));
-    printf("%lf\n", poly3(a, x, N));
-    printf("%lf\n", poly4(a, x, N));
+    timer(poly1);
+    timer(poly2);
+    timer(poly3);
+    timer(poly4);
+
     return 0;
 }
 
@@ -35,14 +36,14 @@ void timer(double (*fp)(double a[], double x, int n)) {
 
     double sum;
 
-    start_time = clock();
+    start_t = clock();
     for (int i = 1; i <= BENCHMARK; i++) {
         sum = fp(a, x, N);
     }
-    end_time = clock();
-    seconds = (end_time - start_time) / CLK_TCK / BENCHMARK;
+    end_t = clock();
+    ticks = (end_t - start_t) / BENCHMARK;
 
-    printf("f(x) = %f, time=%6.2e\n", sum, seconds);
+    printf("f(x) = %f, time=%6.2e\n", sum, ticks);
 }
 
 // 调用函数库
