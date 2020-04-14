@@ -6,34 +6,32 @@
 typedef struct queue {
     int arr[SIZE];
     int first;
-    int last;
+    int next;
+    int count;
 } Queue;
 
 void init_queue(Queue *q) {
     q->first = 0;
-    q->last = 0;
-}
-
-bool is_full(Queue *q) {
-
-    return q->last == q->first && q->first != 0;
+    q->next = 0;
+    q->count = 0;
 }
 
 bool is_empty(Queue *q) {
-    return q->first == q->last;
+    return q->count == 0;
+}
+
+bool is_full(Queue *q) {
+    return q->count == SIZE;
 }
 
 void en_queue(Queue *q, int val) {
     if (is_full(q)) {
-        printf("first: %d\n", q->first);
-        printf("last: %d\n", q->last);
-        printf("queue is full!\n");
         return;
     }
 
-    printf("aaa: %d\n", q->last);
-    q->arr[q->last] = val;
-    q->last = (q->last + 1) % SIZE;
+    q->arr[q->next] = val;
+    q->next = (q->next + 1) % SIZE;
+    q->count++;
 }
 
 int de_queue(Queue *q) {
@@ -45,12 +43,11 @@ int de_queue(Queue *q) {
     result = q->arr[q->first];
     q->arr[q->first] = -1;
     q->first = (q->first + 1) % SIZE;
+    q->count--;
     return result;
 }
 
 int main(void) {
-    int a[3] = {11};
-
     Queue q;
     init_queue(&q);
     en_queue(&q, 1);
