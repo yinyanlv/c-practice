@@ -6,7 +6,6 @@ typedef struct node Node;
 
 struct node {
     int value;
-    Node *prev;
     Node *next;
 };
 
@@ -19,11 +18,11 @@ typedef struct queue {
 
 void en_queue(Queue *q, int value) {
 
+    Node *n = (Node *)malloc(sizeof(Node));
+    n->value = value;
+    n->next = NULL;
+
     if (q->first == NULL) {
-       Node *n = (Node *)malloc(sizeof(Node));
-       n->value = value;
-       n->prev = NULL;
-       n->next = NULL;
        q->first = n;
        q->last = n;
        q->count++;
@@ -31,30 +30,43 @@ void en_queue(Queue *q, int value) {
        return;
     }
 
-    Node *n = (Node *)malloc(sizeof(Node));
-    n->value = value;
-    n->prev = q->last;
-    n->next = NULL;
-    q->last = n;
+    q->last->next = n;
     q->count++;
 }
 
 int de_queue(Queue *q) {
+    printf("a::%d\n", q->count);
     if (q->count == 0) {
          printf("queue is empty!\n");
          return -1;
     }
 
-    return 1;
+    Node* n = q->first;
+    int temp = n->value;
+
+    q->first = q->first->next;
+    q->count--;
+    free(n);
+    return temp;
+}
+
+void init_queue(Queue *q) {
+    q->first = NULL;
+    q->last = NULL;
+    q->count = 0;
 }
 
 
 int main(void) {
     Queue q;
-    q.first = NULL;
+
+    init_queue(&q);
 
     en_queue(&q, 1);
     en_queue(&q, 2);
+    de_queue(&q);
+    de_queue(&q);
+    de_queue(&q);
     Node *head;
 
     for (head = q.first; head != NULL; head = head->next) {
